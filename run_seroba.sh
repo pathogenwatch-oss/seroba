@@ -7,7 +7,7 @@ grep -v "^>" /tmp/assembly.fas | awk 'BEGIN { ORS=""; print ">merged_contigs\n" 
 # simulate reads from assembly
 pirs simulate -l 100 -x 50 -m 500 -o assembly /tmp/assembly_merged.fas
 # run seroba
-seroba runSerotyping /seroba/databse assembly_100_500_1.fq assembly_100_500_2.fq assembly
+seroba runSerotyping /seroba/database assembly_100_500_1.fq assembly_100_500_2.fq assembly
 # output result
 cat assembly/pred.tsv
 
