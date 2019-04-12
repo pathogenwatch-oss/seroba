@@ -1,0 +1,8 @@
+name: seroba
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - pirs=2.0.2
+  - seroba=1.0.0
