@@ -6,6 +6,7 @@ RUN apt update; apt install -y make g++ gcc zlib1g-dev libboost-dev ariba python
 RUN wget https://github.com/galaxy001/pirs/archive/v2.0.2.tar.gz && \
     tar xvfz v2.0.2.tar.gz && \
     cd pirs-2.0.2 && \
+    make && \
     cp src/pirs/pirs /usr/local/bin
 RUN git clone https://github.com/aunderwo/seroba && \
     cd seroba  && \
