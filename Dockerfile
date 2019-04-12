@@ -12,6 +12,6 @@ RUN mkdir /seroba && \
     git clone https://github.com/sanger-pathogens/seroba.git repo && \
     cp -r repo/database database && \
     rm -r repo &&\
-    seroba createDBs database 71
+    seroba createDBs database/ 71
 
       
