@@ -2,7 +2,7 @@ FROM continuumio/miniconda3
 LABEL authors="Anthony Underwood" \
       description="Docker image containing all requirements for seroba analysis"
 
-RUN apt update; apt install -y gcc git
+RUN apt update; apt install -y gcc git jq
 
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
