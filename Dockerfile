@@ -6,6 +6,7 @@ RUN apt update; apt install -y gcc git
 
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
+ENV PATH /opt/conda/envs/seroba/bin:$PATH 
 RUN mkdir /seroba && \
     cd  /seroba && \
     git clone https://github.com/sanger-pathogens/seroba.git repo && \
@@ -13,4 +14,4 @@ RUN mkdir /seroba && \
     rm -r repo &&\
     seroba createDBs database 71
 
-ENV PATH /opt/conda/envs/seroba/bin:$PATH       
+      
