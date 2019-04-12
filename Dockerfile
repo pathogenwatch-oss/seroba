@@ -10,7 +10,7 @@ RUN mkdir /seroba && \
     cd  /seroba && \
     git clone https://github.com/sanger-pathogens/seroba.git repo && \
     cp -r repo/database database && \
-    rm -r seroba &&\
+    rm -r repo &&\
     seroba createDBs database 71
 
 ENV PATH /opt/conda/envs/seroba/bin:$PATH       
