@@ -13,5 +13,7 @@ RUN mkdir /seroba && \
     cp -r repo/database database && \
     rm -r repo &&\
     seroba createDBs database/ 71
+COPY run_seroba.sh /root/bin/run_seroba.sh
+CMD ["/root/bin/run_seroba.sh"]
 
       
