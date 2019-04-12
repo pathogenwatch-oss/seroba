@@ -8,7 +8,7 @@ RUN wget https://github.com/galaxy001/pirs/archive/v2.0.2.tar.gz && \
     cd pirs-2.0.2 && \
     make && \
     cp src/pirs/pirs /usr/local/bin && \
-    mkdir -p ${PREFIX}/share/pirs && \
+    mkdir -p /usr/local/share/pirs && \
     cp -r src/pirs/Profiles/* /usr/local/share/pirs
 
 RUN git clone https://github.com/aunderwo/seroba && \
