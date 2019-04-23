@@ -10,9 +10,9 @@ pirs simulate -l 100 -x 15 -m 500 -o assembly /tmp/assembly_merged.fas  > /dev/n
 seroba runSerotyping  --coverage 2 /seroba/database assembly_100_500_1.fq assembly_100_500_2.fq assembly  > /dev/null 2>&1
 # output result
 result=$(awk '{print $2}' assembly/pred.tsv)
-jq --arg key0 'result_type' \
-   --arg value0 'spn_serotyping' \
-   --arg key1 'result_value' \
+jq --arg key0 'source' \
+   --arg value0 'SEROBA' \
+   --arg key1 'value' \
    --arg value1 $result \
     '. | .[$key0]=$value0 | .[$key1]=$value1 ' \
    <<<'{}'
