@@ -11,7 +11,7 @@ seroba runSerotyping  --coverage 2 /seroba/database assembly_100_500_1.fq assemb
 # output result
 result=$(awk '{print $2}' assembly/pred.tsv)
 jq --arg key0 'source' \
-   --arg value0 'SEROBA' \
+   --arg value0 'SeroBA' \
    --arg key1 'value' \
    --arg value1 $result \
     '. | .[$key0]=$value0 | .[$key1]=$value1 ' \
