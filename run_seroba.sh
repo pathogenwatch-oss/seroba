@@ -8,12 +8,5 @@ grep -v "^>" /tmp/assembly.fas | awk 'BEGIN { ORS=""; print ">merged_contigs\n" 
 pirs simulate -l 100 -x 15 -m 500 -o assembly /tmp/assembly_merged.fas  > /dev/null 2>&1
 # run seroba
 seroba runSerotyping  --coverage 2 /seroba/database assembly_100_500_1.fq assembly_100_500_2.fq assembly  > /dev/null 2>&1
-# output result
-result=$(awk '{print $2}' assembly/pred.tsv)
-jq --arg key0 'source' \
-   --arg value0 'SeroBA' \
-   --arg key1 'value' \
-   --arg value1 $result \
-    '. | .[$key0]=$value0 | .[$key1]=$value1 ' \
-   <<<'{}'
-
+# write value to STDOUT
+awk '{print $2}' assembly/pred.tsv
