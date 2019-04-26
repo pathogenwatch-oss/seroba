@@ -9,4 +9,4 @@ pirs simulate -l 100 -x 15 -m 500 -o assembly /tmp/assembly_merged.fas  > /dev/n
 # run seroba
 seroba runSerotyping  --coverage 2 /seroba/database assembly_100_500_1.fq assembly_100_500_2.fq assembly  > /dev/null 2>&1
 # write value to STDOUT
-awk '{print $2}' assembly/pred.tsv
+awk -F '\t' '{print $2}' assembly/pred.tsv
