@@ -13,7 +13,6 @@ RUN wget https://github.com/galaxy001/pirs/archive/v2.0.2.tar.gz && \
 
 RUN git clone https://github.com/aunderwo/seroba && \
     cd seroba  && \
-    # git checkout best_match_only && \
     git checkout master && \
     ./install_dependencies.sh
 ENV PATH /seroba/build:$PATH
