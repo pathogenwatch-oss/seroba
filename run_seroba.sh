@@ -1,14 +1,36 @@
 #!/usr/bin/env bash
 
-COVERAGE=${PIRS_COVERAGE:-50}
+set -euo pipefail
 
-# write STDIN to temp file
-cat - > /tmp/assembly.fas
-# merge all contigs into a single concatenated sequence
-grep -v "^>" /tmp/assembly.fas | awk 'BEGIN { ORS=""; print ">merged_contigs\n" } { print }' > /tmp/assembly_merged.fas
-# simulate reads from assembly
-pirs simulate -l 100 -x $COVERAGE -m 500 --no-substitution-errors --no-indel-errors --no-gc-content-bias --threads=1 --random-seed=12345 -o assembly /tmp/assembly_merged.fas  > /dev/null 2>&1
-# run seroba
-seroba runSerotyping --coverage $[COVERAGE * 2/5] /seroba/database assembly_100_500_1.fq assembly_100_500_2.fq assembly > /dev/null 2>&1
-# write value to STDOUT
-tail -n 1 assembly/pred.csv | awk -F ',' '{print $2}'
+COVERAGE=${PIRS_COVERAGE:-50}
+TEMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TEMP_DIR"' EXIT
+
+# Function to handle errors
+error_exit() {
+    echo "Error: $1" >&2
+    exit 1
+}
+
+# Write STDIN to temp file
+cat - > "$TEMP_DIR/assembly.fas" || error_exit "Failed to write assembly to temp file"
+
+# Merge all contigs into a single concatenated sequence
+grep -v "^>" "$TEMP_DIR/assembly.fas" |
+    awk 'BEGIN { ORS=""; print ">merged_contigs\n" } { print }' > "$TEMP_DIR/assembly_merged.fas" ||
+    error_exit "Failed to merge contigs"
+
+# Simulate reads from assembly
+pirs simulate -l 100 -x "$COVERAGE" -m 500 --no-substitution-errors --no-indel-errors \
+    --no-gc-content-bias --threads=1 --random-seed=12345 -o "$TEMP_DIR/assembly" \
+    "$TEMP_DIR/assembly_merged.fas" > /dev/null 2>&1 ||
+    error_exit "Failed to simulate reads"
+
+# Run seroba
+seroba runSerotyping --coverage $((COVERAGE * 2 / 5)) /seroba/database \
+    "$TEMP_DIR/assembly_100_500_1.fq" "$TEMP_DIR/assembly_100_500_2.fq" "$TEMP_DIR/assembly" > /dev/null 2>&1 ||
+    error_exit "Failed to run seroba"
+
+# Write value to STDOUT
+tail -n 1 "$TEMP_DIR/assembly/pred.csv" | awk -F ',' '{print $2}' ||
+    error_exit "Failed to extract prediction"
